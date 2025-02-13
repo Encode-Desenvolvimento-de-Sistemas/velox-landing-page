@@ -1,0 +1,47 @@
+---
+import "@fontsource/inter";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/inter/800.css";
+import "@fontsource/inter/900.css";
+import "../assets/fonts/font.css";
+
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="bg-bgDark2">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="description"
+      content="Dark themed website template built on AstroJS, designed for fictional startup"
+    />
+    <title>{title}</title>
+  </head>
+  <body class="bg-bgDark2">
+    <main aria-label="Main content">
+      <slot />
+    </main>
+    <style is:global>
+      html {
+        font-family: 'Host Grotesk', san-serif;
+        background-color: #26272b;
+        overflow-x: hidden;
+        scroll-behavior: smooth !important;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-family: Syncopate, san-serif;
+        font-weight: 400;
+      }
+    </style>
+  </body>
+</html>

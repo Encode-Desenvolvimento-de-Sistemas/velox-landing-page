@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { Navbar } from '../components/Navbar.jsx'
+import { HeroTerms } from '../components/HeroTerms.jsx'
+import { TermsAndConditions } from '../components/TermsAndConditions'
+import { Footer } from '../components/Footer.jsx'
+import { ScrollUpButton } from '../components/ScrollUpButton'
+import '../styles/Theme.css'
+import '../styles/Diagonals.css'
+---
+
+<Layout title="Velox">
+  <Navbar client:load />
+  <HeroTerms client:load />
+  <TermsAndConditions client:load />
+  <Footer />
+  <ScrollUpButton client:load />
+</Layout>
