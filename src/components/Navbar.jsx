@@ -76,7 +76,7 @@ export const Navbar = () => {
             <a
               className="text-white main-border-gray rounded-xl
            bg-bgDark2 hover:bg-bgDark3  border-gray-700 pl-6 pr-8 pt-2 pb-2 text-sm flex gap-3"
-              href="https://github.com/matt765/Tidestream"
+              href="https://console.veloxotp.com"
               target="_blank"
               aria-label="source code"
             >
