@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-import { InvitationModal } from "./InvitationModal";
+import { SubscribeModal } from "./SubscribeModal";
 import { CheckArrowIcon } from "../assets/icons/CheckArrowIcon";
+
+import { usePlanStore } from '../store';
+
+console.log(import.meta.env.API_URL)
 
 const starter = [
   "1000 envios de SMS",
@@ -29,9 +33,15 @@ const professional = [
 export const Pricing = () => {
   const [isMonthly, setIsMonthly] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setPlanSelected } = usePlanStore();
 
   const handleChange = () => {
     setIsMonthly(!isMonthly);
+  };
+
+  const handlePlanSelection = (plan) => {
+    setPlanSelected(plan);
+    setIsModalOpen(true);
   };
 
   return (
@@ -74,128 +84,72 @@ export const Pricing = () => {
               </label>
             </div>
             <div className="flex flex-wrap flex-col lg:flex-row -mx-4 items-center mt-20">
-              <div className="w-[350px] sm:w-[380px] lg:w-1/3 px-4 mb-8 lg:mb-0">
-                <div className="p-8 bg-bgDark3 rounded-3xl">
-                  <h3 className="mb-2 text-xl font-heading text-primaryText text-left">
-                    Starter
-                  </h3>
-                  <div className="flex justify-start items-end">
-                    <div className="text-4xl sm:text-4xl font-bold text-primaryText text-left mt-4 mr-2">
-                      {/* {isMonthly ? "R$ 89,90" : "R$ 970,92"} */}
-                      {isMonthly ? "R$ 149,90" : "R$ 970,92"}
+              {[
+                {
+                  id: "9e33c83b-e4dd-4c0d-bd13-7654061148bf",
+                  title: "Starter",
+                  value: isMonthly ? 149.9 : 970.92,
+                  description: "Perfeito para dar os primeiros passos e testar seu potencial",
+                  benefits: starter,
+                },
+                {
+                  id: "9e33c83b-e53b-45ca-af17-60407291de15",
+                  title: "Essential",
+                  value: isMonthly ? 249.9 : 1679.16,
+                  description: "O equilíbrio perfeito entre alcance e custo-benefício",
+                  benefits: essential,
+                },
+                {
+                  id: "9e33c83b-e5b7-4be4-9e8d-d46c3668efe3",
+                  title: "Professional",
+                  value: isMonthly ? 449.9 : 3779.16,
+                  description: "Máxima capacidade para quem precisa de performance e escala",
+                  benefits: professional,
+                },
+              ].map((plan, index) => (
+                <div
+                  key={index}
+                  className={`w-[350px] sm:w-[380px] lg:w-1/3 px-4 mb-8 lg:mb-0 ${index != 1 && 'pt-8' }`}
+                >
+                  <div className="p-8 bg-bgDark3 rounded-3xl">
+                    <h3 className="mb-2 text-xl font-heading text-primaryText text-left">
+                      {plan.title}
+                    </h3>
+                    <div className="flex justify-start items-end">
+                      <div className="text-4xl sm:text-4xl font-bold text-primaryText text-left mt-4 mr-2">
+                        R$ {plan.value.toFixed(2)}
+                      </div>
+                      <div className="text-gray-500">
+                        {isMonthly ? "/ mês" : "/ ano"}
+                      </div>
                     </div>
-                    <div className="text-gray-500">
-                      {isMonthly ? "/ mês" : "/ ano"}
-                    </div>
+                    <p className="mt-4 mb-6 2xl:mb-10 text-gray-500 leading-loose text-left">
+                      {plan.description}
+                    </p>
+                    <ul className="mb-2 2xl:mb-6 text-primaryText">
+                      {plan.benefits.map((text, index) => (
+                        <li className="mb-4 flex" key={`${text}-${index}`}>
+                          <CheckArrowIcon />
+                          {index < 2 ? <strong>{text}</strong> : <span>{text}</span>}
+                        </li>
+                      ))}
+                    </ul>
+                    <button
+                      className="inline-block text-center py-2 px-4 w-full rounded-xl rounded-t-xl contained-button font-bold leading-loose mt-16"
+                      onClick={() => handlePlanSelection(plan)}
+                      aria-label="Criar conta grátis"
+                    >
+                      Criar conta grátis
+                    </button>
                   </div>
-                  <p className="mt-4 mb-6 2xl:mb-10 text-gray-500 leading-loose text-left">
-                    Perfeito para dar os primeiros passos e testar seu potencial
-                  </p>
-                  <ul className="mb-2 2xl:mb-6 text-primaryText">
-                    {starter.map((text, index) => (
-                      <li className="mb-4 flex" key={`${text}-${index}`}>
-                        <CheckArrowIcon />
-                        {index < 2 ? (
-                          <strong>{text}</strong>
-                        ) : (
-                          <span>{text}</span>
-                        )
-                      }
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    className="inline-block text-center py-2 px-4 w-full rounded-xl rounded-t-xl contained-button font-bold leading-loose mt-16"
-                    onClick={() => setIsModalOpen(true)}
-                    aria-label="Criar conta grátis"
-                  >
-                    Criar conta grátis
-                  </button>
                 </div>
-              </div>
-              <div className="w-[350px] sm:w-[380px] lg:w-1/3 px-4 mb-8 lg:mb-0">
-                <div className="px-8 py-8 bg-bgDark3 rounded-3xl">
-                  <h3 className="mb-2 2xl:mb-4 text-2xl font-heading text-primaryText text-left">
-                    Essential
-                  </h3>
-                  <div className="flex justify-start items-end">
-                    <div className="text-4xl sm:text-4xl font-bold text-primaryText text-left mt-4 mr-2">
-                      {/* {isMonthly ? "R$ 199,90" : "R$ 1679,16"} */}
-                      {isMonthly ? "R$ 249,90" : "R$ 1679,16"}
-                    </div>
-                    <div className="text-gray-500">
-                      {isMonthly ? "/ mês" : "/ ano"}
-                    </div>
-                  </div>
-                  <p className="mt-8 mb-8 2xl:mb-12 text-gray-500 leading-loose text-left">
-                    O equilíbrio perfeito entre alcance e custo-benefício
-                  </p>
-                  <ul className="mb-14 text-primaryText">
-                    {essential.map((text, index) => (
-                      <li className="mb-4 flex" key={`${text}-${index}`}>
-                      <CheckArrowIcon />
-                      {index < 2 ? (
-                        <strong>{text}</strong>
-                      ) : (
-                        <span>{text}</span>
-                      )
-                    }
-                    </li>
-                    ))}
-                  </ul>
-                  <button
-                    className="inline-block text-center py-2 px-4 w-full contained-button leading-loose transition duration-200 mt-20"
-                    onClick={() => setIsModalOpen(true)}
-                    aria-label="Criar conta grátis"
-                  >
-                    Criar conta grátis
-                  </button>
-                </div>
-              </div>
-              <div className="w-[350px] sm:w-[380px] lg:w-1/3 px-4 mb-8 lg:mb-0">
-                <div className="p-8 bg-bgDark3 rounded-3xl">
-                  <h3 className="mb-2 text-xl font-heading text-primaryText text-left">
-                    Professional
-                  </h3>
-                  <div className="flex justify-start items-end">
-                    <div className="text-4xl sm:text-4xl font-bold text-primaryText text-left mt-4 mr-2">
-                      {isMonthly ? "R$ 449,90" : "R$ 3779,16"}
-                    </div>
-                    <div className="text-gray-500">
-                      {isMonthly ? "/ mês" : "/ ano"}
-                    </div>
-                  </div>
-                  <p className="mt-4 mb-6 2xl:mb-10 text-gray-500 leading-loose text-left">
-                    Máxima capacidade para quem precisa de performance e escala
-                  </p>
-                  <ul className="mb-2 2xl:mb-6 text-primaryText">
-                    {professional.map((text, index) => (
-                      <li className="mb-4 flex" key={`${text}-${index}`}>
-                        <CheckArrowIcon />
-                        {index < 2 ? (
-                          <strong>{text}</strong>
-                        ) : (
-                          <span>{text}</span>
-                        )
-                      }
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    className="inline-block text-center py-2 px-4 w-full rounded-xl rounded-t-xl contained-button font-bold leading-loose mt-16"
-                    onClick={() => setIsModalOpen(true)}
-                    aria-label="Criar conta grátis"
-                  >
-                    Criar conta grátis
-                  </button>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </motion.div>
       </div>
       {isModalOpen && (
-        <InvitationModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+        <SubscribeModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
       )}
     </section>
   );

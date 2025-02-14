@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { VeloxLogo } from "../assets/logos/VeloxLogo";
 import { UserIcon } from "../assets/icons/UserIcon";
-import { InvitationModal } from "./InvitationModal";
 
 const navbarLinks = [
   { label: "Home", href: "/#home", ariaLabel: "Home" },
@@ -14,9 +13,11 @@ const navbarLinks = [
   { label: "Fale Conosco", href: "/#contact", ariaLabel: "contact" },
 ];
 
+const goToPlans = () => {
+  window.location.href = '#pricing'
+}
 
 export const Navbar = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -67,7 +68,7 @@ export const Navbar = () => {
           <div className="grow basis-0 gap-3 justify-end hidden lg:flex">
             <button
               className="contained-button text-sm w-64 sm:w-48 h-10 mr-0 mb-2 sm:mb-0"
-              onClick={() => setIsModalOpen(true)}
+              onClick={goToPlans}
               aria-label="Criar conta grátis"
             >
               Criar conta grátis
@@ -120,7 +121,7 @@ export const Navbar = () => {
               ))}
               <button
                 className="contained-button w-64 sm:w-52 h-12 mr-0 sm:mr-4 lg:mr-6 mb-2 sm:mb-0"
-                onClick={() => setIsModalOpen(true)}
+                onClick={goToPlans}
                 aria-label="Criar conta grátis"
               >
                 Criar conta grátis
@@ -129,9 +130,6 @@ export const Navbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      {isModalOpen && (
-        <InvitationModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
-      )}
     </nav>
   );
 };

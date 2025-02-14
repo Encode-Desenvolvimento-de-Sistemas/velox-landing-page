@@ -2,12 +2,13 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRightIcon } from "../assets/icons/ArrowUpRightIcon";
 
-import { InvitationModal } from "./InvitationModal";
 import dashboard from "../assets/images/documentation.png";
 
-export const Hero = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const goToPlans = () => {
+  window.location.href = '#pricing'
+}
 
+export const Hero = () => {
   return (
     <section
       className="w-screen  flex justify-center items-center bg-bgDark1 mb-[28vw] md:mb-[18vw] lg:mb-[10vw] xl:mb-[13vw] 2xl:mb-60 hero-bg-gradient pb-24 sm:pb-32 md:pb-44 lg:pb-0"
@@ -53,7 +54,7 @@ export const Hero = () => {
           <div className="flex flex-col gap-2 sm:flex-row mt-14 mb-24 sm:mb-40 justify-center">
             <button
               className="contained-button w-64 sm:w-52 h-12 mr-0 sm:mr-4 lg:mr-6 mb-2 sm:mb-0"
-              onClick={() => setIsModalOpen(true)}
+              onClick={goToPlans}
               aria-label="Criar conta grátis"
             >
               Criar conta grátis
@@ -98,9 +99,6 @@ export const Hero = () => {
           </div>
         </div>
       </div>
-      {isModalOpen && (
-        <InvitationModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
-      )}
     </section>
   );
 };
