@@ -11,8 +11,8 @@ const footerData = [
   {
     title: "Important Links",
     items: [
-      {title: "Termos e Condições", href:"terms"},
-      {title: "Política de Privacidade", href:"privacy-policy"},
+      {title: "Termos e Condições", href:"/terms"},
+      {title: "Política de Privacidade", href:"/privacy-policy"},
     ],
   },
   {

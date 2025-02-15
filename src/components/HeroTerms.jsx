@@ -13,10 +13,10 @@ export const HeroTerms = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.05 }}
         >
-          <div className="text-4xl sm:text-6xl lg:text-7xl xl:text-7xl font-bold tracking-wide  text-primaryText  px-8 sm:px-8 md:px-20 lg:px-4">
+          <div className="text-4xl sm:text-6xl lg:text-7xl xl:text-7xl tracking-wide  text-primaryText  px-8 sm:px-8 md:px-20 lg:px-4">
             <h1>Termos</h1>
           </div>
-          <h1 className="mt-2 sm:mt-2 text-4xl sm:text-6xl lg:text-7xl xl:text-7xl font-bold tracking-wide  text-primaryText  px-8 sm:px-20 md:px-24 lg:px-24">
+          <h1 className="mt-2 sm:mt-2 text-4xl sm:text-6xl lg:text-7xl xl:text-7xl tracking-wide  text-primaryText  px-8 sm:px-20 md:px-24 lg:px-24">
             e condições
           </h1>
         </motion.div>
