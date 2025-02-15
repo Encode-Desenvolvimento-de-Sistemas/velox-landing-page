@@ -63,7 +63,7 @@ export const Pricing = () => {
               <p className="mb-6 text-secondaryText">
                 Escolha o plano ideal para sua plataforma
               </p>
-              <label className="mx-auto bg-bgDark3 relative flex justify-between items-center group text-xl w-44 h-12 rounded-lg pr-36 pl-1 cursor-pointer">
+              {/* <label className="mx-auto bg-bgDark3 relative flex justify-between items-center group text-xl w-44 h-12 rounded-lg pr-36 pl-1 cursor-pointer">
                 <input
                   type="checkbox"
                   className="peer appearance-none"
@@ -81,28 +81,28 @@ export const Pricing = () => {
                   </div>
                   <div className={isMonthly ? "text-gray-400 pl-1" : "pl-1"}>Anual</div>
                 </div>
-              </label>
+              </label> */}
             </div>
-            <div className="flex flex-wrap flex-col lg:flex-row -mx-4 items-center mt-20">
+            <div className="flex flex-wrap flex-col lg:flex-row -mx-4 items-center mt-10">
               {[
                 {
                   id: "9e33c83b-e4dd-4c0d-bd13-7654061148bf",
                   title: "Starter",
-                  value: isMonthly ? 149.9 : 970.92,
+                  value: 149.9,
                   description: "Perfeito para dar os primeiros passos e testar seu potencial",
                   benefits: starter,
                 },
                 {
                   id: "9e33c83b-e53b-45ca-af17-60407291de15",
                   title: "Essential",
-                  value: isMonthly ? 249.9 : 1679.16,
+                  value: 249.9,
                   description: "O equilíbrio perfeito entre alcance e custo-benefício",
                   benefits: essential,
                 },
                 {
                   id: "9e33c83b-e5b7-4be4-9e8d-d46c3668efe3",
                   title: "Professional",
-                  value: isMonthly ? 449.9 : 3779.16,
+                  value: 449.9,
                   description: "Máxima capacidade para quem precisa de performance e escala",
                   benefits: professional,
                 },
@@ -115,8 +115,9 @@ export const Pricing = () => {
                     <h3 className="mb-2 text-xl font-heading text-primaryText text-left">
                       {plan.title}
                     </h3>
+                    <p className="text-primaryText mt-4">Teste por 7 dias, depois</p>
                     <div className="flex justify-start items-end">
-                      <div className="text-4xl sm:text-4xl font-bold text-primaryText text-left mt-4 mr-2">
+                      <div className="text-4xl sm:text-4xl font-bold text-primaryText text-left mr-2">
                         R$ {plan.value.toFixed(2)}
                       </div>
                       <div className="text-gray-500">
