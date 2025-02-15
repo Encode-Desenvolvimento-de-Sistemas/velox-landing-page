@@ -27,7 +27,7 @@ export const Features1 = () => {
                 Códigos OTP por SMS ou E-mail, sem complicação
               </h2>
               <p className="mb-10 text-secondaryText leading-loose">
-                Nossa API permite o envio ultrarrápido de códigos de verificação, 
+                Nossa API permite o envio ultrarrápido de códigos de verificação
               </p>
               <ul className="mb-6 text-primaryText">
                 <li className="mb-4 flex">
