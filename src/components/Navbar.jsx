@@ -14,7 +14,7 @@ const navbarLinks = [
 ];
 
 const goToPlans = () => {
-  window.location.href = '#pricing'
+  window.location.href = '/#pricing'
 }
 
 export const Navbar = () => {
