@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRightIcon } from "../assets/icons/ArrowUpRightIcon";
 
-import dashboard from "../assets/images/documentation.png";
+import dashboard from "../assets/images/documentation.webp";
 
 const goToPlans = () => {
   window.location.href = '#pricing'
