@@ -1,50 +1,69 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckArrowIcon } from "../assets/icons/CheckArrowIcon";
 import { CloseIcon } from "../assets/icons/CloseIcon";
-import { usePlanStore } from "../store";
+import { usePlanStore, useRegisterStore } from "../store";
 import { useState } from "react";
 
 export const SubscribeModal = ({ setIsOpen }) => {
   const { planSelected } = usePlanStore();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
-    fullName: "",
-    cpf: "",
+    name: "",
+    document: "",
     phone: "",
     email: "",
     password: "",
-    cardName: "",
-    cardNumber: "",
-    expiration: "",
-    cvv: "",
+    credit_card: {
+      name: "",
+      number: "",
+      expiration: "",
+      cvv: "",
+    },
   });
+
+  const userStore = useRegisterStore();
+
   const [errors, setErrors] = useState({ email: false });
   // Lógica para verificar se os campos estão preenchidos
   const isStep1Complete =
-    form.fullName.trim() &&
-    form.cpf.trim() &&
+    form.name.trim() &&
+    form.document.trim() &&
     form.phone.trim() &&
     form.email.trim() &&
     form.password.trim() &&
     !errors.email;
 
   const isStep2Complete =
-    form.cardName.trim() &&
-    form.cardNumber.trim().replace(/\s/g, "").length === 16 &&
-    form.expiration.trim().length === 5 &&
-    form.cvv.trim().length === 3;
+    form.credit_card.name.trim() &&
+    form.credit_card.number.trim().replace(/\s/g, "").length === 16 &&
+    form.credit_card.expiration.trim().length === 5 &&
+    form.credit_card.cvv.trim().length === 3;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "cpf") {
-      const formatted = value
-        .replace(/\D/g, "")
-        .substring(0, 11)
-        .replace(/(\d{3})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-      setForm({ ...form, cpf: formatted });
+    if (name === "document") {
+      const rawValue = value.replace(/\D/g, ""); // Remove caracteres não numéricos
+      let formatted = "";
+
+      if (rawValue.length <= 11) {
+        // CPF
+        formatted = rawValue
+          .substring(0, 11)
+          .replace(/(\d{3})(\d)/, "$1.$2")
+          .replace(/(\d{3})(\d)/, "$1.$2")
+          .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+      } else {
+        // CNPJ
+        formatted = rawValue
+          .substring(0, 14)
+          .replace(/(\d{2})(\d)/, "$1.$2")
+          .replace(/(\d{3})(\d)/, "$1.$2")
+          .replace(/(\d{3})(\d{4})/, "$1/$2")
+          .replace(/(\d{4})(\d{1,2})$/, "$1-$2");
+      }
+
+      setForm({ ...form, document: formatted });
     } else if (name === "phone") {
       const formatted = value
         .replace(/\D/g, "")
@@ -52,21 +71,47 @@ export const SubscribeModal = ({ setIsOpen }) => {
         .replace(/(\d{2})(\d)/, "($1) $2")
         .replace(/(\d{5})(\d)/, "$1-$2");
       setForm({ ...form, phone: formatted });
-    } else if (name === "cardNumber") {
+    } else if (name === "credit_card.number") {
       const formatted = value
         .replace(/\D/g, "")
         .substring(0, 16)
         .replace(/(\d{4})(?=\d)/g, "$1 ");
-      setForm({ ...form, cardNumber: formatted });
-    } else if (name === "expiration") {
+      setForm({
+        ...form,
+        credit_card: {
+          ...form.credit_card,
+          number: formatted,
+        },
+      });
+    } else if (name === "credit_card.expiration") {
       const formatted = value
         .replace(/\D/g, "")
         .substring(0, 4)
         .replace(/(\d{2})(\d{1,2})/, "$1/$2");
-      setForm({ ...form, expiration: formatted });
-    } else if (name === "cvv") {
+      setForm({
+        ...form,
+        credit_card: {
+          ...form.credit_card,
+          expiration: formatted,
+        },
+      });
+    } else if (name === "credit_card.cvv") {
       const formatted = value.replace(/\D/g, "").substring(0, 3);
-      setForm({ ...form, cvv: formatted });
+      setForm({
+        ...form,
+        credit_card: {
+          ...form.credit_card,
+          cvv: formatted,
+        },
+      });
+    } else if (name === "credit_card.name") {
+      setForm({
+        ...form,
+        credit_card: {
+          ...form.credit_card,
+          name: value,
+        },
+      });
     } else {
       setForm({ ...form, [name]: value });
     }
@@ -79,6 +124,49 @@ export const SubscribeModal = ({ setIsOpen }) => {
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, 2));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+
+  const subscribe = () => {
+    userStore.setUser({
+      name: form.name,
+      document: form.document,
+      phone: form.phone,
+      email: form.email,
+      password: form.password,
+      password_confirmation: form.password,
+      role: "customer",
+      abilities: [
+        {
+          action: "read",
+          subject: "General",
+        },
+        {
+          action: "read",
+          subject: "UserProfile",
+        },
+        {
+          action: "read",
+          subject: "Logout",
+        },
+        {
+          action: "read",
+          subject: "Auth",
+        },
+        {
+          action: "read",
+          subject: "ClientDashboard",
+        },
+      ],
+      credit_card: {
+        name: form.credit_card.name,
+        number: form.credit_card.number,
+        expiration: form.credit_card.expiration,
+        cvv: form.credit_card.cvv,
+      },
+      plan_id: planSelected.id,
+    });
+
+    userStore.createUser();
+  };
 
   return (
     <AnimatePresence>
@@ -128,18 +216,18 @@ export const SubscribeModal = ({ setIsOpen }) => {
                       <input
                         className="px-4 py-3 w-full text-gray-700 placeholder-gray-500 outline-none border bg-gray-200 border-gray-300 rounded-lg focus:ring focus:ring-indigo-300"
                         type="text"
-                        name="fullName"
-                        value={form.fullName}
+                        name="name"
+                        value={form.name}
                         onChange={handleInputChange}
                         placeholder="Nome completo"
                       />
                       <input
                         className="px-4 py-3 w-full text-gray-700 placeholder-gray-500 outline-none border bg-gray-200 border-gray-300 rounded-lg focus:ring focus:ring-indigo-300"
                         type="text"
-                        name="cpf"
-                        value={form.cpf}
+                        name="document"
+                        value={form.document}
                         onChange={handleInputChange}
-                        placeholder="CPF (XXX.XXX.XXX-XX)"
+                        placeholder="CPF/CNPJ"
                       />
                       <input
                         className="px-4 py-3 w-full text-gray-700 placeholder-gray-500 outline-none border bg-gray-200 border-gray-300 rounded-lg focus:ring focus:ring-indigo-300"
@@ -147,7 +235,7 @@ export const SubscribeModal = ({ setIsOpen }) => {
                         name="phone"
                         value={form.phone}
                         onChange={handleInputChange}
-                        placeholder="Telefone (XX) XXXXX-XXXX"
+                        placeholder="Telefone"
                       />
                       <p className="text-lg font-semibold text-primaryText">
                         Dados de acesso
@@ -181,36 +269,39 @@ export const SubscribeModal = ({ setIsOpen }) => {
                   )}
                   {step === 2 && (
                     <>
+                      <p className="text-secondaryText mt-2">
+                        Teste gratuitamente por 7 dias, cancele quando quiser.
+                      </p>
                       <input
                         className="px-4 py-3 w-full text-gray-700 placeholder-gray-500 outline-none border bg-gray-200 border-gray-300 rounded-lg focus:ring focus:ring-indigo-300"
                         type="text"
-                        name="cardName"
-                        value={form.cardName}
+                        name="credit_card.name"
+                        value={form.credit_card.name}
                         onChange={handleInputChange}
                         placeholder="Nome do titular do cartão"
                       />
                       <input
                         className="px-4 py-3 w-full text-gray-700 placeholder-gray-500 outline-none border bg-gray-200 border-gray-300 rounded-lg focus:ring focus:ring-indigo-300"
                         type="text"
-                        name="cardNumber"
-                        value={form.cardNumber}
+                        name="credit_card.number"
+                        value={form.credit_card.number}
                         onChange={handleInputChange}
-                        placeholder="Número do cartão (XXXX XXXX XXXX XXXX)"
+                        placeholder="Número do cartão"
                       />
                       <div className="flex space-x-4">
                         <input
                           className="px-4 py-3 w-1/2 text-gray-700 placeholder-gray-500 outline-none border bg-gray-200 border-gray-300 rounded-lg focus:ring focus:ring-indigo-300"
                           type="text"
-                          name="expiration"
-                          value={form.expiration}
+                          name="credit_card.expiration"
+                          value={form.credit_card.expiration}
                           onChange={handleInputChange}
-                          placeholder="Vencimento (MM/YY)"
+                          placeholder="Validade (MM/YY)"
                         />
                         <input
                           className="px-4 py-3 w-1/2 text-gray-700 placeholder-gray-500 outline-none border bg-gray-200 border-gray-300 rounded-lg focus:ring focus:ring-indigo-300"
                           type="text"
-                          name="cvv"
-                          value={form.cvv}
+                          name="credit_card.cvv"
+                          value={form.credit_card.cvv}
                           onChange={handleInputChange}
                           placeholder="CVV"
                         />
@@ -220,7 +311,11 @@ export const SubscribeModal = ({ setIsOpen }) => {
                 </div>
 
                 {/* Botões de navegação */}
-                <div className="flex justify-between mt-8">
+                <div
+                  className={`flex mt-8 ${
+                    step === 2 ? "justify-between" : "justify-end"
+                  }`}
+                >
                   {step > 1 && (
                     <button
                       className="py-2 px-6 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
@@ -248,7 +343,7 @@ export const SubscribeModal = ({ setIsOpen }) => {
                           ? "bg-green-500 hover:bg-green-600"
                           : "bg-gray-300 cursor-not-allowed"
                       }`}
-                      onClick={() => alert("Assinatura concluída!")}
+                      onClick={subscribe}
                       disabled={!isStep2Complete}
                     >
                       Finalizar

@@ -6,8 +6,6 @@ import { CheckArrowIcon } from "../assets/icons/CheckArrowIcon";
 
 import { usePlanStore } from '../store';
 
-console.log(import.meta.env.API_URL)
-
 const starter = [
   "1000 envios de SMS",
   "1000 envios de email",
@@ -121,7 +119,7 @@ export const Pricing = () => {
                         R$ {plan.value.toFixed(2)}
                       </div>
                       <div className="text-gray-500">
-                        {isMonthly ? "/ mês" : "/ ano"}
+                        / mês
                       </div>
                     </div>
                     <p className="mt-4 mb-6 2xl:mb-10 text-gray-500 leading-loose text-left">
