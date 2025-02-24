@@ -51,7 +51,9 @@ export const FAQ = () => (
     >
       <div className="relative z-10 container px-2 sm:px-8 lg:px-4 mx-auto w-11/12 sm:w-full">
         <div className="md:max-w-4xl mx-auto">
-          <p className="mb-7 block-subtitle text-center">Você tem alguma dúvida?</p>
+          <p className="mb-7 block-subtitle text-center">
+            Você tem alguma dúvida?
+          </p>
           <h2 className="mb-16 block-big-title text-center">
             Perguntas Frequentes
           </h2>
@@ -84,28 +86,36 @@ const FAQBox = ({ defaultOpen, idx, title, content }) => {
     >
       <div className="flex flex-col p-2  justify-center items-start">
         <h3 className=" content-title pt-3 sm:pt-0 pr-8 sm:pr-0">{title}</h3>
-        <p
-          className={`text-secondaryText pt-4 transition-height duration-300 overflow-hidden ${
-            isOpen ? "max-h-96" : "max-h-0"
-          }`}
-        >
-          {idx == 3 ? (
+        {idx == 3 ? (
+          <div
+            className={`text-secondaryText pt-4 transition-height duration-300 overflow-hidden ${
+              isOpen ? "max-h-96" : "max-h-0"
+            }`}
+          >
             <ul className="mb-6 text-primaryText">
-              <li className="mb-4 flex"> 
+              <li className="mb-4 flex">
                 <CheckArrowIcon />
                 <span>Segurança reforçada para acessos e transações</span>
               </li>
-              <li className="mb-4 flex"> 
+              <li className="mb-4 flex">
                 <CheckArrowIcon />
                 <span>Envio ultrarrápido de OTPs via SMS e e-mail</span>
               </li>
-              <li className="mb-4 flex"> 
+              <li className="mb-4 flex">
                 <CheckArrowIcon />
                 <span>Escalabilidade para qualquer tamanho de negócio</span>
               </li>
             </ul>
-          ) : content}
-        </p>
+          </div>
+        ) : (
+          <p
+            className={`text-secondaryText pt-4 transition-height duration-300 overflow-hidden ${
+              isOpen ? "max-h-96" : "max-h-0"
+            }`}
+          >
+            {content}
+          </p>
+        )}
       </div>
       <div className="absolute top-6 right-4 sm:top-8 sm:right-8">
         <svg

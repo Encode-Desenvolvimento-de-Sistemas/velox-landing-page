@@ -44,12 +44,12 @@ const useRegisterStore = create((set, get) => ({
   ...initialState,
   setUser: (newUser) => set(() => ({ user: newUser })),
   createUser: async () => {
-    try {
-      const response = await axios.post('users', get().user);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   const response = await axios.post('users', get().user);
+    //   console.log(response);
+    // } catch (error) {
+    //   console.error(error);
+    // }
   },
   resetUser: () => {
     set(initialState)
